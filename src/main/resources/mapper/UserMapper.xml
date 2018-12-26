@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.org.dao.UserDao">
+
+    <resultMap id="user" type="com.org.pojo.User">
+        <result property="sid" column="sid"/>
+        <result property="uname" column="username"/>
+        <result property="spassword" column="spassword"/>
+        <result property="smobile" column="smobile"/>
+
+    </resultMap>
+    <select id="userInfo" parameterType="java.lang.String" resultMap="user">
+        SELECT * FROM student.`user` WHERE sid=#{sid};
+</select>
+
+    <select id="userlist" resultMap="user">
+        SELECT * FROM student.`user`
+        <where>
+            <if test="sid!='' and sid!=null">
+                sid=#{sid}
+            </if>
+            <if test="sname!='' and sname!=null">
+                AND sname=#{sname}
+            </if>
+        </where>
+    </select>
+
+    <select id="userInfoAboutFriend" parameterType="List">
+        SELECT uid, nickname, level, hxUsername, avatar
+        FROM godpacket.userinfo WHERE uid IN
+        <foreach collection="list" item="uid" open="(" close=")" separator=",">
+            #{uid}
+        </foreach>
+    </select>
+
+
+</mapper>
